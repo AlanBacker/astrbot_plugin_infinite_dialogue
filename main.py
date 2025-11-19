@@ -5,7 +5,7 @@ from astrbot.core.agent.message import UserMessageSegment, TextPart, AssistantMe
 import json
 import asyncio
 
-@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.4", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
+@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.5", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
 class InfiniteDialoguePlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
@@ -74,6 +74,7 @@ class InfiniteDialoguePlugin(Star):
                 "   - 重要的上下文约束（如用户偏好、设定的场景规则等）。\n"
                 "   - AI（你）在总结中则表述你自己的身份，这将会给未来的你自己看。\n"
                 "   - 并且要让未来的你自己明白这个前情提要并非来自用户所为，而是全自动总结。\n"
+                "   - 在结尾添加你最后说了什么，用户最后说了什么。\n"
                 "4. **语气**：使用客观、陈述性的语气。\n\n"
                 f"对话记录：\n{history_text}"
             )
