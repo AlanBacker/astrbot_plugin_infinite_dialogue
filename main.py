@@ -195,13 +195,25 @@ class InfiniteDialoguePlugin(Star):
                             new_conv.history = json.dumps(new_history, ensure_ascii=False)
                             
                             # 4. 保存带有注入历史的新对话
-                            if hasattr(conv_mgr, "update_conversation"):
-                                await conv_mgr.update_conversation(new_conv)
-                                logger.info("总结已保存至新对话历史。")
-                            elif hasattr(conv_mgr, "save_conversation"):
-                                await conv_mgr.save_conversation(new_conv)
-                                logger.info("总结已通过 save_conversation 保存。")
-                            else:
+                            saved = False
+                            if hasattr(conv_mgr, "save_conversation"):
+                                try:
+                                    await conv_mgr.save_conversation(new_conv)
+                                    logger.info("总结已通过 save_conversation 保存。")
+                                    saved = True
+                                except Exception as e:
+                                    logger.warning(f"save_conversation 失败: {e}")
+                            
+                            if not saved and hasattr(conv_mgr, "update_conversation"):
+                                try:
+                                    await conv_mgr.update_conversation(new_conv)
+                                    logger.info("总结已保存至新对话历史。")
+                                except TypeError as e:
+                                    if "unhashable type" in str(e):
+                                        logger.warning(f"update_conversation 抛出 unhashable type 错误，但这可能不影响当前会话: {e}")
+                                    else:
+                                        raise e
+                            elif not saved:
                                 logger.warning("无法保存新对话历史：未找到保存方法。")
                         else:
                             logger.error("无法获取新对话对象。")
