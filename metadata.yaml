@@ -1,6 +1,6 @@
 plugin_type: star
 name: astrbot_plugin_infinite_dialogue
-version: 1.0.2
+version: 1.0.3
 author: Alan Backer
 desc: 这是一个为 AstrBot 设计的插件，旨在通过自动总结对话历史来实现'无限对话'功能
 url: https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue
