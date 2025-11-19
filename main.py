@@ -5,7 +5,7 @@ from astrbot.core.agent.message import UserMessageSegment, TextPart, AssistantMe
 import json
 import asyncio
 
-@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.5", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
+@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.6", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
 class InfiniteDialoguePlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
