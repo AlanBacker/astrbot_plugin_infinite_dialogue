@@ -1,0 +1,30 @@
+{
+    "max_conversation_length": {
+        "description": "触发总结的对话次数阈值 (N)",
+        "type": "int",
+        "default": 40,
+        "hint": "当对话历史条数达到此数值时，触发总结并清理历史。"
+    },
+    "summary_provider_id": {
+        "description": "用于总结的模型提供商 ID",
+        "type": "string",
+        "default": "",
+        "hint": "留空则使用当前会话的模型。可填写如 'openai', 'gemini' 等。",
+        "_special": "select_provider"
+    },
+    "max_retries": {
+        "description": "总结失败重试次数",
+        "type": "int",
+        "default": 3,
+        "hint": "如果总结失败，尝试重试的次数。默认 3 次。"
+    },
+    "whitelist": {
+        "description": "白名单列表 (群号或QQ号)",
+        "type": "list",
+        "default": [],
+        "hint": "留空则允许所有。填写群号或个人QQ号。",
+        "items": {
+            "type": "string"
+        }
+    }
+}
