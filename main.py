@@ -14,28 +14,14 @@ class InfiniteDialoguePlugin(Star):
 
     @filter.event_message_type(filter.EventMessageType.ALL, priority=100)
     async def on_message(self, event: AstrMessageEvent, *args, **kwargs):
-        # 健壮的参数扫描
-        actual_event = None
-        if isinstance(event, AstrMessageEvent):
-            actual_event = event
-        else:
-            for arg in args:
-                if isinstance(arg, AstrMessageEvent):
-                    actual_event = arg
-                    break
-        
-        if not actual_event:
-            candidates = [event] + list(args)
-            for cand in candidates:
-                if hasattr(cand, "message_obj"):
-                    actual_event = cand
-                    break
-        
-        if not actual_event:
-            logger.error(f"无法在参数中找到 AstrMessageEvent 对象。")
-            return
-
-        event = actual_event
+        # 简化事件对象获取逻辑
+        if not isinstance(event, AstrMessageEvent):
+            # 尝试从 args 中获取 (处理可能的参数偏移)
+            if args and isinstance(args[0], AstrMessageEvent):
+                event = args[0]
+            else:
+                logger.error("无法找到有效的 AstrMessageEvent 对象")
+                return
 
         # 0. 检查白名单
         whitelist = self.config.get("whitelist", [])
@@ -68,7 +54,9 @@ class InfiniteDialoguePlugin(Star):
         if conversation.history:
             try:
                 messages = json.loads(conversation.history)
-            except:
+            except json.JSONDecodeError:
+                logger.warning("无法解析对话历史 JSON")
+            except Exception:
                 pass
         
         current_length = len(messages)
