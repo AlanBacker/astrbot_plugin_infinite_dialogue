@@ -1,6 +1,6 @@
 {
     "max_conversation_length": {
-        "description": "触发总结的对话次数阈值 (N)",
+        "description": "触发总结的对话次数阈值(N)",
         "type": "int",
         "default": 40,
         "hint": "当对话历史条数达到此数值时，触发总结并清理历史。"
