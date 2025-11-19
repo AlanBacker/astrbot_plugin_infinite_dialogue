@@ -5,7 +5,7 @@ from astrbot.core.agent.message import UserMessageSegment, TextPart, AssistantMe
 import json
 import asyncio
 
-@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.0", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
+@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.4", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
 class InfiniteDialoguePlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
@@ -13,29 +13,7 @@ class InfiniteDialoguePlugin(Star):
         logger.info("无限对话插件(InfiniteDialoguePlugin) 初始化成功。")
 
     @filter.event_message_type(filter.EventMessageType.ALL, priority=100)
-    async def on_message(self, event: AstrMessageEvent, *args, **kwargs):
-        # 健壮的参数扫描
-        actual_event = None
-        if isinstance(event, AstrMessageEvent):
-            actual_event = event
-        else:
-            for arg in args:
-                if isinstance(arg, AstrMessageEvent):
-                    actual_event = arg
-                    break
-        
-        if not actual_event:
-            candidates = [event] + list(args)
-            for cand in candidates:
-                if hasattr(cand, "message_obj"):
-                    actual_event = cand
-                    break
-        
-        if not actual_event:
-            logger.error(f"无法在参数中找到 AstrMessageEvent 对象。")
-            return
-
-        event = actual_event
+    async def on_message(self, event: AstrMessageEvent):
 
         # 0. 检查白名单
         whitelist = self.config.get("whitelist", [])
