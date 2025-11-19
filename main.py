@@ -13,7 +13,7 @@ class InfiniteDialoguePlugin(Star):
         logger.info("无限对话插件(InfiniteDialoguePlugin) 初始化成功。")
 
     @filter.event_message_type(filter.EventMessageType.ALL, priority=100)
-    async def on_message(self, event: AstrMessageEvent):
+    async def on_message(self, event: AstrMessageEvent, *args, **kwargs):
 
         # 0. 检查白名单
         whitelist = self.config.get("whitelist", [])
