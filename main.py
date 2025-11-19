@@ -5,12 +5,12 @@ from astrbot.core.agent.message import UserMessageSegment, TextPart, AssistantMe
 import json
 import asyncio
 
-@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.6", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
+@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.7", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
 class InfiniteDialoguePlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.config = config
-        logger.info("无限对话插件(InfiniteDialoguePlugin) 初始化成功。")
+        logger.info("无限对话插件(InfiniteDialoguePlugin) v1.0.7 初始化成功。")
 
     @filter.event_message_type(filter.EventMessageType.ALL, priority=100)
     async def on_message(self, event: AstrMessageEvent, *args, **kwargs):
