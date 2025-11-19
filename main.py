@@ -5,12 +5,12 @@ from astrbot.core.agent.message import UserMessageSegment, TextPart, AssistantMe
 import json
 import asyncio
 
-@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.7", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
+@register("astrbot_plugin_infinite_dialogue", "Alan Backer", "自动总结对话历史实现无限对话", "1.0.8", "https://github.com/AlanBacker/astrbot_plugin_infinite_dialogue")
 class InfiniteDialoguePlugin(Star):
     def __init__(self, context: Context, config: AstrBotConfig):
         super().__init__(context)
         self.config = config
-        logger.info("无限对话插件(InfiniteDialoguePlugin) v1.0.7 初始化成功。")
+        logger.info("无限对话插件(InfiniteDialoguePlugin) v1.0.8 初始化成功。")
 
     @filter.event_message_type(filter.EventMessageType.ALL, priority=100)
     async def on_message(self, event: AstrMessageEvent, *args, **kwargs):
@@ -55,6 +55,14 @@ class InfiniteDialoguePlugin(Star):
         if current_length >= max_len:
             logger.info(f"当前对话长度 {current_length} 已达到阈值 {max_len}。正在触发总结...")
             
+            # 将当前消息临时加入到历史记录中，以便总结包含最新上下文
+            current_msg_content = event.message_str
+            if not current_msg_content and event.message_obj.message:
+                current_msg_content = "".join([p.text for p in event.message_obj.message if isinstance(p, TextPart)])
+            
+            if current_msg_content:
+                messages.append({"role": "user", "content": current_msg_content})
+
             # 准备总结内容
             history_text = ""
             for msg in messages:
